@@ -8,7 +8,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - id: set-matrix
-        run: >
+        run: |
           echo '
           matrix={
             "include":
@@ -17,7 +17,7 @@ jobs:
               {"project": "bar", "config": "Release"}
             ]
           }
-          ' >> $GITHUB_OUTPUT
+          ' | tr -d '\n' >> $GITHUB_OUTPUT
   job2:
     needs: job1
     runs-on: ubuntu-latest
