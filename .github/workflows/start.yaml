@@ -10,8 +10,7 @@ jobs:
       - id: set-matrix
         run: |
           cat <<EOF >> $GITHUB_OUTPUT
-          matrix={
-            "include": [
+          matrix={"include": [
               {"project": "foo", "config": "Debug"},
               {"project": "bar", "config": "Release"}
             ]
