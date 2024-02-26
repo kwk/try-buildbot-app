@@ -1,4 +1,4 @@
-name: "multiline-matrix"
+name: "experiment-workflow"
 
 on:
   workflow_dispatch: {}
@@ -12,14 +12,14 @@ jobs:
       - id: set-matrix
         run: |
           {
-            echo 'matrix<<EOF'
+            echo 'matrix=
             {
               "include": [
                 {"project": "foo", "config": "Debug"},
                 {"project": "bar", "config": "Release"}
               ]
             }
-            echo EOF
+            '
           } >> "$GITHUB_OUTPUT"
 
   job2:
