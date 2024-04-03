@@ -1,0 +1,38 @@
+name: "Check snapshot"
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  # We need this in order to create or update snapshot issues
+  issues: write
+
+jobs:
+  check-snapshot:
+    strategy:
+      fail-fast: false
+      matrix:
+        day_minus_n: [0, 1, 2]
+        name: [standalone, big-merge]
+        include:
+          - name: standalone
+            maintainer_handle: "tuliom"
+            copr_ownername: "@fedora-llvm-team"
+            copr_project_tpl: "llvm-snapshots-incubator-YYYYMMDD"
+            copr_monitor_tpl: "https://copr.fedorainfracloud.org/coprs/g/fedora-llvm-team/llvm-snapshots-incubator-YYYYMMDD/monitor/"
+            packages: "llvm-snapshot-builder python-lit llvm clang lld compiler-rt libomp"
+          - name: big-merge
+            maintainer_handle: "kwk"
+            copr_ownername: "@fedora-llvm-team"
+            copr_project_tpl: "llvm-snapshots-big-merge-YYYYMMDD"
+            copr_monitor_tpl: "https://copr.fedorainfracloud.org/coprs/g/fedora-llvm-team/llvm-snapshots-big-merge-YYYYMMDD/monitor/"
+            chroot_pattern: '^(fedora-(rawhide|[0-9]+)|rhel-9-)'
+            packages: "llvm"
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output day
+        run: |
+          echo "name: ${{ matrix.name }}"
+          echo "day_minus_n: ${{ matrix.day_minus_n }}"
+          
