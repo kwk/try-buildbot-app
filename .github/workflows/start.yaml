@@ -6,8 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "tmp_exists=`test -e /tmp && "yes" || "no"`" >> $GITHUB_ENV
-          echo "foo_exists=`test -e /foo&& "yes" || "no"`" >> $GITHUB_ENV
+          set +e          
+          echo "tmp_exists=`test -e /tmp && 1 || 0`" >> $GITHUB_ENV
+          echo "foo_exists=`test -e /foo && 1 || 0`" >> $GITHUB_ENV
+          set -e
           
       - if: ${{ env.tmp_exists }} == "yes"
         env:
