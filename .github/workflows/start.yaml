@@ -7,8 +7,10 @@ jobs:
     steps:
       - run: |
           set +e          
-          echo "tmp_exists=`test -e /tmp && 1 || 0`" >> $GITHUB_ENV
-          echo "foo_exists=`test -e /foo && 1 || 0`" >> $GITHUB_ENV
+          test -e /tmp
+          echo "tmp_exists=`$?`" >> $GITHUB_ENV
+          test -e /foo
+          echo "foo_exists=`$?`" >> $GITHUB_ENV
           set -e
           
       - if: ${{ env.tmp_exists }} == "yes"
