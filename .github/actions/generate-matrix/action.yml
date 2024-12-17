@@ -5,6 +5,7 @@ description: "Creates a dynamic matrix for all build configurations that we have
 inputs:
   strategy: # "big-merge" or "pgo"
     description: 'build strategy'
+    default: "all"
   lookback_days:
     description: "A JSON list of integers for how many days to look back. \"[0]\" means just today." 
     default: "[0]"
