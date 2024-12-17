@@ -19,8 +19,6 @@ jobs:
     steps:
     - id: set-matrix
       run: |
-        NAMES='["big-merge"]'
-
         BIG_MERGE_CONFIG=$(jq -c <<EOF
           {
               "name": "big-merge",
@@ -47,11 +45,11 @@ jobs:
         if [[ ${{ github.event_name != 'workflow_dispatch' }} ]]; then
           NAMES='["big-merge", "pgo"]'
           INCLUDES="[$BIG_MERGE_CONFIG, $PGO_CONFIG]"
-        elif [[ ${{ inputs.strategy }} == 'big-merge' ]]; then
-          NAMES='["${{ inputs.strategy }}"]'
+        elif [[ '${{ inputs.strategy }}' == 'big-merge' ]]; then
+          NAMES='["big-merge"]'
           INCLUDES="[$BIG_MERGE_CONFIG]"
-        elif [[ ${{ inputs.strategy }} == 'pgo' ]]; then
-          NAMES='["${{ inputs.strategy }}"]'
+        elif [[ '${{ inputs.strategy }}' == 'pgo' ]]; then
+          NAMES='["pgo"]'
           INCLUDES="[$PGO_CONFIG]"
         fi
         echo "myoutput=$(jq -cn --argjson names "$NAMES" --argjson includes "$INCLUDES" '{name: $names, include:$includes}')" >> $GITHUB_OUTPUT
