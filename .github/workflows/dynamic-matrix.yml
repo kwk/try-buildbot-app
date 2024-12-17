@@ -20,7 +20,7 @@ jobs:
     - id: set-matrix
       run: |
         NAMES='["big-merge", "pgo"]'
-        INCLUDES=$(cat <<EOF
+        INCLUDES=$(jq -c <<EOF
         [
           {
             "name": "big-merge",
