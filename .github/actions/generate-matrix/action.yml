@@ -67,8 +67,4 @@ runs:
 
         LOOKBACK_DAYS="${{ inputs.lookback_days }}"
 
-        echo "myoutput=$(jq -cn \
-          --argjson includes "$INCLUDES" \
-          --argjson lookback_days "$LOOKBACK_DAYS" \
-          '{today_minus_n_days: $lookback_days, include:$includes}'\
-        )" >> $GITHUB_OUTPUT
+        echo "myoutput=$(jq -cn --argjson includes "$INCLUDES" --argjson lookback_days "$LOOKBACK_DAYS" '{today_minus_n_days: $lookback_days, include:$includes}')" >> $GITHUB_OUTPUT
