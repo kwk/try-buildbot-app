@@ -19,7 +19,31 @@ jobs:
     steps:
     - id: set-matrix
       run: |
-        NAMES='["big-merge", "pgo"]'
+        NAMES='["big-merge"]'
+        
+        # BIG_MERGE_CONFIG=$(jq -c <<EOF
+        #   {
+        #       "name": "big-merge",
+        #       "copr_project_tpl": "@fedora-llvm-team/llvm-snapshots-big-merge-YYYYMMDD",
+        #       "copr_target_project": "@fedora-llvm-team/llvm-snapshots",
+        #       "clone_url_tpl": "https://src.fedoraproject.org/rpms/PKG.git",
+        #       "clone_ref": "rawhide"
+        #   }
+        # EOF
+        # )
+
+        # PGO_CONFIG=$(jq -c <<EOF
+        #   {
+        #     "name": "pgo",
+        #     "copr_project_tpl": "@fedora-llvm-team/llvm-snapshots-pgo-YYYYMMDD",
+        #     "copr_target_project": "@fedora-llvm-team/llvm-snapshots-pgo",
+        #     "extra_script_file": "scripts/functions-pgo.sh",
+        #     "clone_url_tpl": "https://src.fedoraproject.org/forks/kkleine/rpms/PKG.git",
+        #     "clone_ref": "pgo"
+        #   }
+        # EOF
+        # )
+
         INCLUDES=$(jq -c <<EOF
         [
           {
