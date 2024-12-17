@@ -64,7 +64,7 @@ runs:
           INCLUDES="[$BIG_MERGE_CONFIG, $PGO_CONFIG]"
         fi
 
-        LOOKBACK_DAYS="[0, 1, 2]"
+        LOOKBACK_DAYS="${{ inputs.lookback_days }}"
 
         echo "myoutput=$(jq -cn \
           --argjson includes "$INCLUDES" \
