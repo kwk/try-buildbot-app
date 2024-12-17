@@ -12,7 +12,7 @@ on:
         - pgo
 
 jobs:
-  job1:
+  generate-matrix:
     runs-on: ubuntu-latest
     outputs:
       mymatrix: ${{ steps.set-matrix.outputs.myoutput }}
@@ -43,36 +43,20 @@ jobs:
         )
 
         if [[ '${{ inputs.strategy }}' == 'big-merge' ]]; then
-          NAMES='["big-merge"]'
           INCLUDES="[$BIG_MERGE_CONFIG]"
         elif [[ '${{ inputs.strategy }}' == 'pgo' ]]; then
-          NAMES='["pgo"]'
           INCLUDES="[$PGO_CONFIG]"
         else
-          NAMES='["big-merge", "pgo"]'
           INCLUDES="[$BIG_MERGE_CONFIG, $PGO_CONFIG]"
         fi
-        echo "myoutput=$(jq -cn --argjson names "$NAMES" --argjson includes "$INCLUDES" '{name: $names, include:$includes}')" >> $GITHUB_OUTPUT
+        echo "myoutput=$(jq -cn --argjson includes "$INCLUDES" '{include:$includes}')" >> $GITHUB_OUTPUT
 
   build-on-copr:
-    needs: job1
-    strategy:      
+    needs: generate-matrix
+    strategy:
       fail-fast: false
-      matrix: ${{fromJson(needs.job1.outputs.mymatrix)}}
-        # include:
-        #   - name: big-merge
-        #     copr_project_tpl: "@fedora-llvm-team/llvm-snapshots-big-merge-YYYYMMDD"
-        #     copr_target_project: "@fedora-llvm-team/llvm-snapshots"
-        #     clone_url_tpl: "https://src.fedoraproject.org/rpms/PKG.git"
-        #     clone_ref: rawhide
-        #   - name: pgo
-        #     copr_project_tpl: "@fedora-llvm-team/llvm-snapshots-pgo-YYYYMMDD"
-        #     copr_target_project: "@fedora-llvm-team/llvm-snapshots-pgo"
-        #     extra_script_file: "scripts/functions-pgo.sh"
-        #     clone_url_tpl: "https://src.fedoraproject.org/forks/kkleine/rpms/PKG.git"
-        #     clone_ref: pgo
+      matrix: ${{fromJson(needs.generate-matrix.outputs.mymatrix)}}
     runs-on: ubuntu-latest
     steps:
       - run: |
           echo "name=${{ matrix.name }}"
-          echo "clone_ref=${{ matrix.clone_ref }}"
