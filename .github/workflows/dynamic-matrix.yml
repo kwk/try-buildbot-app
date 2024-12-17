@@ -40,7 +40,6 @@ jobs:
         ]
         EOF
         )
-        INCLUDES=''
         echo "myoutput=$(jq -cn --argjson names "$NAMES" --argjson names "$INCLUDES" '{name: $names, include: $includes}')" >> $GITHUB_OUTPUT
 
   build-on-copr:
